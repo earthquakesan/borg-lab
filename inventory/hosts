@@ -1,0 +1,8 @@
+[server]
+10.10.0.2 
+
+[client]
+10.10.0.3
+
+[all:vars]
+ansible_user=vagrant

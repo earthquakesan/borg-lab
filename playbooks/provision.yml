@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: inject /etc/hosts
+      lineinfile:
+        line: "{{ item }}"
+        create: yes
+        path: /etc/hosts
+      loop:
+        - "10.10.0.2 borg.eccenca.local"
+        - "10.10.0.3 client.eccenca.local"
