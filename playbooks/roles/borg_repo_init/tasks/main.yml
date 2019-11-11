@@ -1,0 +1,6 @@
+---
+- name: initialize a borg repository
+  command: borg init --make-parent-dirs -e repokey-blake2 {{ repository_path }}
+  environment:
+    BORG_PASSPHRASE: "{{ repository_passphrase }}"
+  no_log: True

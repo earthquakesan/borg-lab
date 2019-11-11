@@ -1,6 +1,9 @@
 ---
 - hosts: all
   become: yes
+  vars:
+    private_key: "{{ lookup('file', '/tmp/id_rsa') }}"
+    public_key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
   tasks:
     - name: inject /etc/hosts
       lineinfile:
@@ -10,3 +13,18 @@
       loop:
         - "10.10.0.2 borg.eccenca.local"
         - "10.10.0.3 client.eccenca.local"
+    - name: create necessary dirs
+      file:
+        state: directory
+        path: "/root/.ssh"
+    - name: add id_rsa.pub to /root/.ssh/authorized_keys
+      copy:
+        content: "{{ public_key }}"
+        dest: "/root/.ssh/authorized_keys"
+        mode: "0600"
+    - name: copy id_rsa to /root/.ssh/id_rsa
+      copy:
+        content: "{{ private_key }}\n"
+        dest: "/root/.ssh/id_rsa"
+        mode: "0600"
+

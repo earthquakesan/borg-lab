@@ -1,0 +1,8 @@
+backup_server_user: "root"
+backup_server_host: "borg.eccenca.local"
+repository_path: "/data/borg"
+source_directories:
+  - /home
+  - /etc
+  - /var/log/syslog*
+encryption_passphrase: "supers3crets00394cret"

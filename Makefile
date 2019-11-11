@@ -5,12 +5,19 @@ add-ssh-key:
 	ssh-add ~/.vagrant.d/insecure_private_key
 
 provision: add-ssh-key
-	 ${pb_run}/provision.yml
+	cp playbooks/provision/* /tmp/
+	${pb_run}/provision.yml
 
-install-restic: add-ssh-key
+install-borg: add-ssh-key
 	${pb_run}/borg.yml
 
-install: provision install-restic
+install-borgmatic: add-ssh-key
+	${pb_run}/borgmatic.yml
+
+install-borg-repo: add-ssh-key
+	${pb_run}/borg_init.yml
+
+install: provision install-borg install-borgmatic install-borg-repo
 
 ssh-server: add-ssh-key
 	ssh vagrant@10.10.0.2
