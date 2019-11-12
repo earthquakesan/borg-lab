@@ -106,7 +106,7 @@ storage:
     # initialized with passphrase/repokey encryption. Quote the value if it contains
     # punctuation, so it parses correctly. And backslash any quote or backslash
     # literals as well. Defaults to not set.
-    encryption_passphrase: "{{ encryption_passphrase }}"
+    encryption_passphrase: "{{ repository_passphrase }}"
 
     # Number of seconds between each checkpoint during a long-running backup. See
     # https://borgbackup.readthedocs.io/en/stable/faq.html#if-a-backup-stops-mid-way-does-the-already-backed-up-data-stay-there
@@ -186,16 +186,16 @@ retention:
     # keep_hourly: 24
 
     # Number of daily archives to keep.
-    keep_daily: 7
+    keep_daily: {{ keep_daily }}
 
     # Number of weekly archives to keep.
-    # keep_weekly: 4
+    keep_weekly: {{ keep_weekly }}
 
     # Number of monthly archives to keep.
-    # keep_monthly: 6
+    keep_monthly: {{ keep_monthly }}
 
     # Number of yearly archives to keep.
-    # keep_yearly: 1
+    keep_yearly: {{ keep_yearly }}
 
     # When pruning, only consider archive names starting with this prefix.
     # Borg placeholders can be used. See the output of "borg help placeholders" for
@@ -205,16 +205,17 @@ retention:
 # Consistency checks to run after backups. See
 # https://borgbackup.readthedocs.org/en/stable/usage.html#borg-check and
 # https://borgbackup.readthedocs.org/en/stable/usage.html#borg-extract for details.
-# consistency:
+consistency:
     # List of one or more consistency checks to run: "repository", "archives", "data",
     # and/or "extract". Defaults to "repository" and "archives". Set to "disabled" to
     # disable all consistency checks. "repository" checks the consistency of the
     # repository, "archives" checks all of the archives, "data" verifies the integrity
     # of the data within the archives, and "extract" does an extraction dry-run of the
     # most recent archive. Note that "data" implies "archives".
-    # checks:
-        # - repository
-        # - archives
+    checks:
+{% for item in consistency_checks %}
+        - {{ item }}
+{% endfor %}
 
     # Paths to a subset of the repositories in the location section on which to run
     # consistency checks. Handy in case some of your repositories are very large, and

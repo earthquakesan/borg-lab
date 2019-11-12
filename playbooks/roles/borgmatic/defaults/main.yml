@@ -5,4 +5,17 @@ source_directories:
   - /home
   - /etc
   - /var/log/syslog*
-encryption_passphrase: "supers3crets00394cret"
+repository_passphrase: "supers3crets00394cret"
+# Retention
+keep_daily: 7
+keep_weekly: 4
+keep_monthly: 12
+keep_yearly: 5
+consistency_checks:
+  - repository
+  - archives
+cron_min: "*"
+cron_hour: "*"
+cron_day_month: "*"
+cron_month: "*"
+cron_day_week: "*"
