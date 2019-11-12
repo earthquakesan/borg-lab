@@ -17,9 +17,9 @@
       file:
         state: directory
         path: "/root/.ssh"
-    - name: add id_rsa.pub to /root/.ssh/authorized_keys
+    - name: add id_rsa.pub to /root/.ssh/authorized_keys, restrict to run borg serve only
       copy:
-        content: "{{ public_key }}"
+        content: "command=\"borg serve\",restrict {{ public_key }}"
         dest: "/root/.ssh/authorized_keys"
         mode: "0600"
     - name: copy id_rsa to /root/.ssh/id_rsa
