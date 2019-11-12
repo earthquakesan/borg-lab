@@ -30,10 +30,9 @@ borgmatic
 
 ## Restore
 
-Restore functionality is currently failing:
-
 ```
 make ssh-client
 borgmatic list
-borgmatic restore --archive client-datetime-stamp
+borgmatic list --archive client-2019-11-12T05:51:06.582587
+borgmatic extract --archive client-2019-11-12T05:51:06.582587 --restore-path var/log/syslog
 ```
