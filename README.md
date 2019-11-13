@@ -50,6 +50,17 @@ export BORG_PASSPHRASE='h9haM_1l0g_if.ysWu8:XWqPvaCyu-fvAWHCyGsvoY,64iIAHn'
 borg list
 ```
 
+## Notifications
+
+On failure borgmatic will execute scripts located in /root/bin/pagerduty-notification.sh.
+The script will trigger an incident in PagerDuty.
+To work properly, it requires a routing key from a service in PagerDuty.
+To setup the routing key, create the following file and edit it afterwards:
+
+```
+cp playbooks/secrets.yml.example playbooks/secrets.yml
+```
+
 ## Misc Tasks
 
 ### Updating playbooks/roles/borg/files/borg.public.key
