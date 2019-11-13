@@ -1,8 +1,8 @@
 ---
 - hosts: client
   become: yes
-  vars:
-    pagerduty_routing_key: "xxx"
+  vars_files:
+    - ./secrets.yml
 
   roles:
     - borgmatic
