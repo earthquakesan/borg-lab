@@ -13,6 +13,8 @@
       loop:
         - "10.10.0.2 borg.eccenca.local"
         - "10.10.0.3 client.eccenca.local"
+        - "10.10.0.4 app.eccenca.local"
+        - "10.10.0.5 web.eccenca.local"
     - name: create necessary dirs
       file:
         state: directory
@@ -31,4 +33,3 @@
       shell: ssh-keyscan -H {{ item }} >> /root/.ssh/known_hosts
       loop:
         - "borg.eccenca.local"
-        - "client.eccenca.local"

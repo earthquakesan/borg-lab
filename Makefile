@@ -24,3 +24,9 @@ ssh-server: add-ssh-key
 
 ssh-client: add-ssh-key
 	ssh vagrant@10.10.0.3
+
+ssh-app: add-ssh-key
+	ssh vagrant@10.10.0.4
+
+ssh-web: add-ssh-key
+	ssh vagrant@10.10.0.5

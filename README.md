@@ -37,6 +37,19 @@ borgmatic list --archive client-2019-11-12T05:51:06.582587
 borgmatic extract --archive client-2019-11-12T05:51:06.582587 --restore-path var/log/syslog
 ```
 
+Every client has access only to its' own repository. The repository key is stored in credentials/ directory after initialization (generated on provision).
+
+## Access Backups from the backup machine
+
+Look up the password in the credentials/ directory.
+
+```
+make ssh-server
+export BORG_REPO="/data/borg/app.eccenca.local/"
+export BORG_PASSPHRASE='h9haM_1l0g_if.ysWu8:XWqPvaCyu-fvAWHCyGsvoY,64iIAHn'
+borg list
+```
+
 ## Misc Tasks
 
 ### Updating playbooks/roles/borg/files/borg.public.key

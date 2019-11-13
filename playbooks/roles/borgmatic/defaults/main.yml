@@ -1,7 +1,8 @@
-borgmatic_version: "1.3.26"
+borgmatic_version: "1.4.9"
 backup_server_user: "root"
 backup_server_host: "borg.eccenca.local"
-repository_path: "/data/borg"
+repository_path: '/data/borg/{{ ansible_facts["fqdn"] }}'
+repository: "{{ backup_server_user }}@{{ backup_server_host }}:{{ repository_path }}"
 source_directories:
   - /home
   - /etc

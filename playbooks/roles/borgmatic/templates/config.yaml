@@ -12,7 +12,7 @@ location:
     # repositories are backed up to in sequence. See ssh_command for SSH options like
     # identity file or port.
     repositories:
-        - {{ backup_server_user }}@{{ backup_server_host }}:{{ repository_path }}
+        - {{ repository }}
 
     # Stay in same file system (do not cross mount points). Defaults to false.
     # one_file_system: true

@@ -31,6 +31,16 @@ Vagrant.configure("2") do |config|
     client.vm.hostname = "client.eccenca.local"
   end
 
+  config.vm.define "app" do |app|
+    app.vm.network "private_network", ip: "10.10.0.4"
+    app.vm.hostname = "app.eccenca.local"
+  end
+
+  config.vm.define "web" do |web|
+    web.vm.network "private_network", ip: "10.10.0.5"
+    web.vm.hostname = "web.eccenca.local"
+  end
+
   config.vm.provider "virtualbox" do |vb|
     vb.memory = 1024
     vb.cpus = 1

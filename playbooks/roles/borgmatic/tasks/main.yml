@@ -5,8 +5,6 @@
     state: latest
     update_cache: yes
 - name: install borgmatic
-  # borgmatic 1.4.8 extract/restore does not work properly
-  # see https://projects.torsion.org/witten/borgmatic/issues/243#issuecomment-2109
   pip:
     name: "borgmatic=={{ borgmatic_version }}"
     executable: pip3
@@ -21,6 +19,18 @@
     mode: "0600"
     owner: root
     group: root
+- name: check if repository already exists
+  shell: borg check {{ repository }}
+  register: borg_check_repository
+  environment:
+    BORG_PASSPHRASE: "{{ repository_passphrase }}"
+  ignore_errors: yes
+- name: initialize a borg repository
+  command: borg init --make-parent-dirs -e repokey-blake2 {{ repository }}
+  when: borg_check_repository.failed
+  environment:
+    BORG_PASSPHRASE: "{{ repository_passphrase }}"
+  no_log: True
 - name: install cronjob to backup the local files
   template:
     src: cronjob.j2

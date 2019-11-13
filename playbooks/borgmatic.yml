@@ -3,6 +3,8 @@
   become: yes
   vars_files:
     - ./secrets.yml
+  vars:
+    repository_passphrase: "{{ lookup('password', '{{ playbook_dir }}/../credentials/{{ ansible_facts[\"fqdn\"] }} length=50') }}"
 
   roles:
     - borgmatic

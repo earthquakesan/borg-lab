@@ -3,6 +3,8 @@
 
 [client]
 10.10.0.3
+10.10.0.4
+10.10.0.5
 
 [all:vars]
 ansible_user=vagrant
