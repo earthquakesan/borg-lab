@@ -37,7 +37,9 @@ borgmatic list --archive client-2019-11-12T05:51:06.582587
 borgmatic extract --archive client-2019-11-12T05:51:06.582587 --restore-path var/log/syslog
 ```
 
-Every client has access only to its' own repository. The repository key is stored in credentials/ directory after initialization (generated on provision).
+Every client has access only to its' own repository. 
+The repository key is stored in credentials/ directory after initialization (generated on provision).
+One repository per client (host) is required, as client acquires a lock on a repository during the sync (i.e. parallel sync of multiple clients to one repo is not possible).
 
 ## Access Backups from the backup machine
 
