@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+export TIMESTAMP="$(date --iso-8601=seconds -u)"
+export HOSTNAME="$(hostname --fqdn)"
+export SUMMARY="Backup failed on host: ${HOSTNAME}, server time: ${TIMESTAMP}"
+export SOURCE="borgmatik:service_provider:${HOSTNAME}"
+export ROUTING_KEY="{{ pagerduty_routing_key }}"
+
+export JSON_PAYLOAD=$(cat <<EOF
+{
+  "payload": {
+    "summary": "${SUMMARY}",
+    "timestamp": "${TIMESTAMP}",
+    "source": "${SOURCE}",
+    "severity": "error",
+    "component": "borgmatik",
+    "group": "backups",
+    "class": "backup failure"
+  },
+  "routing_key": "${ROUTING_KEY}",
+  "event_action": "trigger"
+}
+EOF
+)
+
+curl -X POST -d "${JSON_PAYLOAD}" https://events.pagerduty.com/v2/enqueue

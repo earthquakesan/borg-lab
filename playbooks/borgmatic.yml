@@ -1,6 +1,8 @@
 ---
 - hosts: client
   become: yes
+  vars:
+    pagerduty_routing_key: "xxx"
 
   roles:
     - borgmatic

@@ -7,8 +7,12 @@
   get_url:
     url: "https://github.com/borgbackup/borg/releases/download/{{ borg_version }}/borg-linux64.asc"
     dest: "/tmp/borg-linux64.asc"
+- name: copy gpg public key to the server
+  copy:
+    src: "borg.public.key"
+    dest: "/tmp/borg.public.key"
 - name: import gpg public key necessary for the verification
-  command: gpg --keyserver hkp://keys.gnupg.net:80 --recv-keys "6D5B EF9A DD20 7580 5747 B70F 9F88 FB52 FAF7 B393"
+  command: gpg --import /tmp/borg.public.key
 - name: check validity of the file using gpg verify
   command: gpg --verify /tmp/borg-linux64.asc /tmp/borg-linux64
 - name: move borg-linux64 to /usr/local/bin/borg

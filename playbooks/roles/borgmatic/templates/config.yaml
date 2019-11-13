@@ -244,7 +244,7 @@ consistency:
 # borgmatic. Do not forget to set secure permissions on this configuration file (chmod
 # 0600) as well as on any script called from a hook (chmod 0700) to prevent potential
 # shell injection or privilege escalation.
-# hooks:
+hooks:
     # List of one or more shell commands or scripts to execute before creating a
     # backup, run once per configuration file.
     # before_backup:
@@ -257,8 +257,8 @@ consistency:
 
     # List of one or more shell commands or scripts to execute when an exception
     # occurs during a backup or when running a before_backup or after_backup hook.
-    # on_error:
-        # - echo "Error while creating a backup or running a backup hook."
+    on_error:
+        - /root/bin/pagerduty-notification.sh
 
     # List of one or more PostgreSQL databases to dump before creating a backup,
     # run once per configuration file. The database dumps are added to your source

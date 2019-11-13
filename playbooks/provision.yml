@@ -27,4 +27,8 @@
         content: "{{ private_key }}\n"
         dest: "/root/.ssh/id_rsa"
         mode: "0600"
-
+    - name: add hosts to known_hosts file
+      shell: ssh-keyscan -H {{ item }} >> /root/.ssh/known_hosts
+      loop:
+        - "borg.eccenca.local"
+        - "client.eccenca.local"
