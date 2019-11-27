@@ -6,5 +6,8 @@
 10.10.0.4
 10.10.0.5
 
+[healthchecks]
+10.10.0.6
+
 [all:vars]
 ansible_user=vagrant

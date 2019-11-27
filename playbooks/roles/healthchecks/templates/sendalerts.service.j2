@@ -1,0 +1,23 @@
+[Unit]
+Description=sendalerts
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Slice=machine.slice
+Restart=always
+RestartSec=20
+StartLimitInterval=10
+StartLimitBurst=5
+
+User={{ healthchecks_system_user }}
+Group={{ healthchecks_system_group }}
+
+ExecStart=/usr/bin/python3 -u {{ healthchecks_home }}/active/manage.py sendalerts --no-threads
+
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

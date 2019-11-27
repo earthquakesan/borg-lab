@@ -1,0 +1,35 @@
+---
+- name: Ensure NTP (for time synchronization) is installed.
+  apt: name=ntp state=present
+- name: Ensure NTP is running.
+  service: name=ntp state=started enabled=yes
+- name: Add docker apt keys
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 0EBFCD88
+- name: Add docker apt repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+- name: Install docker
+  apt:
+    name: docker-ce=18.06.1~ce~3-0~ubuntu
+    state: present
+    update_cache: yes
+- name: Install docker python lib
+  apt:
+    name: python-docker
+    state: present
+- name: add vagrant user to docker group
+  user:
+    name: vagrant
+    groups: docker
+- name: Start docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+- name: install dockerpy library
+  pip:
+    name: docker
+    executable: pip3

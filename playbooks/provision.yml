@@ -15,6 +15,7 @@
         - "10.10.0.3 client.eccenca.local"
         - "10.10.0.4 app.eccenca.local"
         - "10.10.0.5 web.eccenca.local"
+        - "10.10.0.6 monitor.eccenca.local"
     - name: create necessary dirs
       file:
         state: directory

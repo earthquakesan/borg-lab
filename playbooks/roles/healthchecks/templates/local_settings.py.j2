@@ -1,0 +1,32 @@
+SITE_ROOT = "{{ site_root }}"
+SITE_NAME = "{{ site_name }}"
+DEFAULT_FROM_EMAIL = "{{ default_from_email }}"
+SERVER_EMAIL = "{{ default_from_email }}"
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '{{ postgresql_db_name }}',
+        'USER': '{{ postgresql_db_user }}',
+        'PASSWORD': '{{ postgresql_db_password }}',
+        'TEST': {'CHARSET': 'UTF8'}
+    }
+}
+
+EMAIL_HOST = "{{ healthchecks_email_host }}"
+EMAIL_PORT = {{ healthchecks_email_port }}
+EMAIL_HOST_USER = "{{ healthchecks_email_user }}"
+EMAIL_HOST_PASSWORD = "{{ healthchecks_email_password }}"
+EMAIL_USE_TLS = {{ healthchecks_email_use_tls }}
+
+PING_ENDPOINT = "{{ healthchecks_ping_endpoint }}"
+PING_EMAIL_DOMAIN = "{{ site_hostname }}"
+
+SECRET_KEY = "{{ healthchecks_secret_key }}"
+DEBUG = {{ healthchecks_debug }}
+ALLOWED_HOSTS = ['{{ site_hostname }}']
+REGISTRATION_OPEN = False
+
+# will receive exceptions via email
+ADMINS = {{ healthchecks_admins }}
+STATIC_ROOT = "{{ healthchecks_static_root }}"

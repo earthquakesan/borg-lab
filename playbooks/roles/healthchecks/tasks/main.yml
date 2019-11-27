@@ -1,0 +1,107 @@
+- name: get healthchecks release
+  get_url:
+    url: https://github.com/healthchecks/healthchecks/archive/v{{ healthchecks_version }}.tar.gz
+    dest: /tmp/{{ healthchecks_version }}.tar.gz
+- name: create an application dir
+  file:
+    state: directory
+    path: "{{ healthchecks_home }}"
+- name: unarchive to {{ healthchecks_home }} directory
+  unarchive:
+    src: /tmp/{{ healthchecks_version }}.tar.gz
+    dest: "{{ healthchecks_home }}"
+    remote_src: yes
+- name: link the current version to active
+  file:
+    state: link
+    src: "{{ healthchecks_home }}/healthchecks-{{ healthchecks_version }}"
+    dest: "{{ healthchecks_active_home }}"
+- name: install necessary python packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop: "{{ python_packages }}"
+- name: install requirements.txt
+  pip:
+    requirements: "{{ healthchecks_active_home }}/requirements.txt"
+    executable: pip3
+- name: initialize local_settings.py
+  template:
+    src: local_settings.py.j2
+    dest: "{{ healthchecks_active_home }}/hc/local_settings.py"
+- name: start PostgreSQL using docker
+  docker_container:
+    name: healtchecks-postgresql
+    image: postgres:12.1-alpine
+    state: started
+    restart_policy: always
+    env:
+      POSTGRES_DB: "{{ postgresql_db_name }}"
+      POSTGRES_USER: "{{ postgresql_db_user }}"
+      POSTGRES_PASSWORD: "{{ postgresql_db_password }}"
+    volumes:
+      - "{{ postgresql_data_dir }}:/var/lib/postgresql/data"
+      - "/var/run/postgresql:/var/run/postgresql"
+    ports:
+      - "5432:5432"
+- name: initialize the database
+  command: python3 manage.py migrate
+  args:
+    chdir: "{{ healthchecks_active_home }}"
+- name: run compress for the file compression
+  command: python3 manage.py compress
+  args:
+    chdir: "{{ healthchecks_active_home }}"
+- name: run collectstatic to generate dir {{ healthchecks_static_root }}
+  shell: echo 'yes' | python3 manage.py collectstatic
+  args:
+    chdir: "{{ healthchecks_active_home }}"
+- name: install systemd unit file sendalerts.service
+  template:
+    src: sendalerts.service.j2
+    dest: /etc/systemd/system/sendalerts.service
+- name: enable and start sendalerts.service
+  systemd:
+    state: restarted
+    name: sendalerts
+    enabled: yes
+    daemon_reload: yes
+- name: create dir for gunicorn socket
+  file:
+    state: directory
+    path: "{{ healthchecks_gunicorn_socket_dir }}"
+- name: install systemd unit file to serve
+  template:
+    src: healthchecks.service.j2
+    dest: /etc/systemd/system/healthchecks.service
+- name: enable and start healthchecks.service
+  systemd:
+    state: restarted
+    name: healthchecks
+    enabled: yes
+    daemon_reload: yes
+- name: initialize nginx configuration dir
+  file:
+    state: directory
+    path: "{{ healthchecks_nginx_conf_dir }}"
+- name: init nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: "{{ healthchecks_nginx_conf_dir }}/nginx.conf"
+- name: start nginx for healthchecks
+  docker_container:
+    name: healtchecks-nginx
+    image: nginx:1.17.6-alpine
+    state: started
+    restart_policy: always
+    volumes:
+      - "{{ healthchecks_gunicorn_socket_dir }}:{{ healthchecks_gunicorn_socket_dir }}"
+      - "{{ healthchecks_nginx_conf_dir }}/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "{{ healthchecks_static_root }}:{{ healthchecks_static_root }}"
+    ports:
+      - "80:80"
+# - name: create super user
+#   command: python3 manage.py createsuperuser --username {{ healthchecks_superuser }} --email {{ healthchecks_superuser_email }} --noinput
+#   args:
+#     chdir: "{{ healthchecks_active_home }}"

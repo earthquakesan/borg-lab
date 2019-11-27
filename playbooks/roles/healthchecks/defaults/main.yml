@@ -1,0 +1,37 @@
+---
+healthchecks_version: "1.11.0"
+healthchecks_home: "/opt/healthchecks"
+healthchecks_active_home: "{{ healthchecks_home }}/active"
+python_packages:
+  - python3-pip
+  - gcc
+  - python3-dev
+  - libpq-dev
+site_hostname: "10.10.0.6"
+site_protocol: "http"
+site_root: "{{ site_protocol }}://{{ site_hostname }}"
+healthchecks_ping_endpoint: "{{ site_protocol }}://{{ site_hostname }}/ping"
+site_name: "healthchecks backup monitoring"
+default_from_email: "root@example.com"
+healthchecks_superuser: "admin"
+healthchecks_superuser_email: "admin@example.com"
+postgresql_db_name: "healthchecks"
+postgresql_db_user: "healthchecks"
+postgresql_db_password: "healthchecks"
+postgresql_data_dir: "/data/postgresql"
+healthchecks_email_host: "exchange.example.com"
+healthchecks_email_port: "587"
+healthchecks_email_user: "username"
+healthchecks_email_password: "password"
+healthchecks_email_use_tls: True
+healthchecks_secret_key: "ndGT6i8q7xsBYLZG4*8egS6M&PfagTbgfhrn2ZM4FjoSBdR&aBefvj2RDXXnBXCUPNQ&vhHvv4pLrC9RJLojpG869jrNJxekNNovXhcC4UMtB!!jX6w2#J@NL&D!Y9QL"
+healthchecks_debug: False
+healthchecks_admins: "[('John', 'john@example.com')]"
+healthchecks_system_user: "root"
+healthchecks_system_group: "root"
+healthchecks_gunicorn_workers: "4"
+healthchecks_gunicorn_socket_dir: "/var/run/healthchecks"
+healthchecks_gunicorn_socket: "{{ healthchecks_gunicorn_socket_dir }}/gunicorn.sock"
+healthchecks_static_subroot: "{{ healthchecks_active_home }}/static-collected"
+healthchecks_static_root: "{{ healthchecks_static_subroot }}/static"
+healthchecks_nginx_conf_dir: "/etc/nginx"

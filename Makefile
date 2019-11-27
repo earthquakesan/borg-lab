@@ -17,7 +17,13 @@ install-borgmatic: add-ssh-key
 install-borg-repo: add-ssh-key
 	${pb_run}/borg_init.yml
 
+install-healthchecks: add-ssh-key
+	${pb_run}/healthchecks.yml
+
 install: provision install-borg install-borgmatic install-borg-repo
+
+healthchecks-vup:
+	VAGRANT_VAGRANTFILE=Vagrantfile.healthchecks vagrant up
 
 ssh-server: add-ssh-key
 	ssh vagrant@10.10.0.2
@@ -30,3 +36,6 @@ ssh-app: add-ssh-key
 
 ssh-web: add-ssh-key
 	ssh vagrant@10.10.0.5
+
+ssh-healthchecks: add-ssh-key
+	ssh vagrant@10.10.0.6
