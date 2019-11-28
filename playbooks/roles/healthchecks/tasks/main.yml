@@ -45,6 +45,10 @@
       - "/var/run/postgresql:/var/run/postgresql"
     ports:
       - "5432:5432"
+- name: wait for database to become available
+  wait_for:
+    port: 5432
+    delay: 2
 - name: initialize the database
   command: python3 manage.py migrate
   args:
@@ -67,6 +71,10 @@
     name: sendalerts
     enabled: yes
     daemon_reload: yes
+- name: install gunicorn
+  pip:
+    executable: pip3
+    name: gunicorn
 - name: create dir for gunicorn socket
   file:
     state: directory

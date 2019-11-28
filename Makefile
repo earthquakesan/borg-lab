@@ -20,7 +20,7 @@ install-borg-repo: add-ssh-key
 install-healthchecks: add-ssh-key
 	${pb_run}/healthchecks.yml
 
-install: provision install-borg install-borgmatic install-borg-repo
+install: provision install-borg install-borgmatic
 
 healthchecks-vup:
 	VAGRANT_VAGRANTFILE=Vagrantfile.healthchecks vagrant up

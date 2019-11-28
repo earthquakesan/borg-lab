@@ -10,7 +10,7 @@ python_packages:
 site_hostname: "10.10.0.6"
 site_protocol: "http"
 site_root: "{{ site_protocol }}://{{ site_hostname }}"
-healthchecks_ping_endpoint: "{{ site_protocol }}://{{ site_hostname }}/ping"
+healthchecks_ping_endpoint: "{{ site_protocol }}://{{ site_hostname }}/ping/"
 site_name: "healthchecks backup monitoring"
 default_from_email: "root@example.com"
 healthchecks_superuser: "admin"
