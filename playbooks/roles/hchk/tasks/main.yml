@@ -15,6 +15,6 @@
     HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"
 - name: create initial ping
   shell: >
-    hchk ping --name $(hostname --fqdn) --tags borgmatik --period {{ healthchecks_period }} --grace {{ healthchecks_grace_period }}
+    hchk ping --name $(hostname --fqdn) --tags borgmatic --period {{ healthchecks_period }} --grace {{ healthchecks_grace_period }}
   environment:
     HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"
