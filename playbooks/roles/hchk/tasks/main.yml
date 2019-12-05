@@ -1,0 +1,20 @@
+# TODO: switch to official hchk cli when MR is done
+# https://github.com/healthchecks/hchk/pull/3
+- name: install pip3
+  apt:
+    name: python3-pip
+    update_cache: yes
+- name: install patched version of hchk
+  pip:
+    name: git+https://github.com/earthquakesan/hchk
+    executable: pip3
+- name: set API key
+  shell: >
+    hchk setkey "{{ healthchecks_api_key }}"
+  environment:
+    HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"
+- name: create initial ping
+  shell: >
+    hchk ping --name $(hostname --fqdn) --tags borgmatik --period {{ healthchecks_period }} --grace {{ healthchecks_grace_period }}
+  environment:
+    HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"

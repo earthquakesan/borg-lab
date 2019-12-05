@@ -12,6 +12,13 @@
   file:
     state: directory
     path: "/etc/borgmatic"
+- name: get ping_url from .hchk file
+  shell: >
+    cat ~/.hchk | grep ping_url | cut -d'=' -f 2 | tr -d "[:blank:]"
+  register: ping_url
+- name: set ping_url output to healthchecks_ping_url var
+  set_fact:
+    healthchecks_ping_url: "{{ ping_url.stdout }}"
 - name: init configuration
   template:
     src: config.yaml

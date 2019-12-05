@@ -303,7 +303,7 @@ hooks:
     # See
     # https://torsion.org/borgmatic/docs/how-to/monitor-your-backups/#healthchecks-hook
     # for details.
-    # healthchecks: https://hc-ping.com/your-uuid-here
+    healthchecks: {{ healthchecks_ping_url }}
 
     # Cronitor ping URL to notify when a backup begins, ends, or errors. Create an
     # account at https://cronitor.io if you'd like to use this service. See

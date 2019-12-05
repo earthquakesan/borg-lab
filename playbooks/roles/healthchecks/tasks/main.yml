@@ -109,7 +109,17 @@
       - "{{ healthchecks_static_root }}:{{ healthchecks_static_root }}"
     ports:
       - "80:80"
-# - name: create super user
-#   command: python3 manage.py createsuperuser --username {{ healthchecks_superuser }} --email {{ healthchecks_superuser_email }} --noinput
-#   args:
-#     chdir: "{{ healthchecks_active_home }}"
+- name: find createsuperuser.py script on the local installation (django)
+  command: find / -name createsuperuser.py
+  register: createsuperuser_path
+- debug: var=createsuperuser_path
+- name: copy patched createsuperuser.py script over the existing one
+  copy:
+    src: createsuperuser.py
+    dest: "{{ createsuperuser_path.stdout }}"
+- name: create super user
+  command: python3 manage.py createsuperuser --username {{ healthchecks_superuser }} --email {{ healthchecks_superuser_email }} --noinput
+  args:
+    chdir: "{{ healthchecks_active_home }}"
+  environment:
+    DJANGO_SUPERUSER_PASSWORD: "{{ healthchecks_superuser_password }}"

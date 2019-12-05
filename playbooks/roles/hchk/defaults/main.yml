@@ -1,0 +1,7 @@
+---
+healthchecks_uri: "http://10.10.0.6"
+healthchecks_api_endpoint: "{{ healthchecks_uri }}/api/v1/checks/"
+# to get an API key go to project settings
+healthchecks_api_key: "qkKsk5AT4eoqGXilfbYEPuAo2x7tr03P"
+healthchecks_period: "86400" # 1 day
+healthchecks_grace_period: "3600" # 1 hour

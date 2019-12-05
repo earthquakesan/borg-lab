@@ -18,7 +18,7 @@
     update_cache: yes
 - name: Install docker python lib
   apt:
-    name: python-docker
+    name: python3-docker
     state: present
 - name: add vagrant user to docker group
   user:
@@ -29,7 +29,3 @@
     name: docker
     state: started
     enabled: yes
-- name: install dockerpy library
-  pip:
-    name: docker
-    executable: pip3

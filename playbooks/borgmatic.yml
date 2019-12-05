@@ -7,4 +7,5 @@
     repository_passphrase: "{{ lookup('password', '{{ playbook_dir }}/../credentials/{{ ansible_facts[\"fqdn\"] }} length=50') }}"
 
   roles:
+    - hchk
     - borgmatic
