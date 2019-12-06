@@ -4,9 +4,21 @@ all:
   children:
     client:
       hosts:
-        10.10.0.3: {}
-        10.10.0.4: {}
-        10.10.0.5: {}
+        10.10.0.3: 
+          source_directories:
+            - /home
+            - /etc
+            - /var/log/syslog*
+        10.10.0.4:
+          source_directories:
+            - /home
+            - /etc
+            - /usr
+        10.10.0.5:
+          source_directories:
+            - /home
+            - /etc
+            - /lib/firmware
     healthchecks:
       hosts:
         10.10.0.6: {}

@@ -112,7 +112,6 @@
 - name: find createsuperuser.py script on the local installation (django)
   command: find / -name createsuperuser.py
   register: createsuperuser_path
-- debug: var=createsuperuser_path
 - name: copy patched createsuperuser.py script over the existing one
   copy:
     src: createsuperuser.py

@@ -16,7 +16,7 @@ keep_yearly: 5
 consistency_checks:
   - repository
   - archives
-cron_min: "*"
+cron_min: "0,10,20,30,40,50"
 cron_hour: "*"
 cron_day_month: "*"
 cron_month: "*"

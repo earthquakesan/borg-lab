@@ -8,13 +8,20 @@
   pip:
     name: git+https://github.com/earthquakesan/hchk
     executable: pip3
-- name: set API key
-  shell: >
-    hchk setkey "{{ healthchecks_api_key }}"
-  environment:
-    HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"
-- name: create initial ping
-  shell: >
-    hchk ping --name $(hostname --fqdn) --tags borgmatic --period {{ healthchecks_period }} --grace {{ healthchecks_grace_period }}
-  environment:
-    HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"
+- name: check if ~/.hchk file exists
+  stat:
+    path: "~/.hchk"
+  register: hchk_stat
+- name: healthchecks hchk setup
+  block:
+  - name: set API key
+    shell: >
+      hchk setkey "{{ healthchecks_api_key }}"
+    environment:
+      HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"
+  - name: create initial ping
+    shell: >
+      hchk ping --name $(hostname --fqdn) --tags borgmatic --period {{ healthchecks_period }} --grace {{ healthchecks_grace_period }}
+    environment:
+      HEALTHCHECKS_API_ENDPOINT: "{{ healthchecks_api_endpoint }}"
+  when: not hchk_stat.stat.exists # file does not exist
